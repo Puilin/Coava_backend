@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Daily, Meme, Buzz
 from argon2 import PasswordHasher
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,3 +17,18 @@ class UserSerializer(serializers.ModelSerializer):
             instance.password = hash
         instance.save()
         return instance
+
+class DailySerializer(serializers.ModelSerializer): #출석체크
+    class Meta:
+        model = Daily
+        fields = ("__all__")
+
+class MemeSerializer(serializers.ModelSerializer): #밈
+    class Meta:
+        model = Meme
+        fields = ("__all__")
+
+class BuzzSerializer(serializers.ModelSerializer): #유행어
+    class Meta: 
+        model = Buzz
+        fields = ("__all__")
