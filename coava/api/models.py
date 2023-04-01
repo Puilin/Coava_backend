@@ -11,9 +11,15 @@ class User(models.Model): # user table
     token = models.PositiveIntegerField(default=0)
     intro = models.CharField(max_length=255, null=True)
 
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args, **kwargs)
+        if created:
+            Daily.objects.create(userid=self)
+
 class Daily(models.Model): #출석체크
-    userid = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.JSONField()
+    userid = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=True)
+    date = models.JSONField(default=list)
 
 class Meme(models.Model): #밈
     title = models.CharField(max_length=255, null=False)

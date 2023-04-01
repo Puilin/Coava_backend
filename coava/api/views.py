@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from rest_framework import views, status, generics, viewsets
+from rest_framework import views, status, generics, viewsets, mixins
 from rest_framework.response import Response
 from .serializer import UserSerializer, DailySerializer, MemeSerializer, BuzzSerializer
 from .models import User, Daily, Meme, Buzz
+from django.db import connection
 
 # Create your views here.
 class UserListView(generics.ListAPIView): # user 전체 목록 출력
@@ -26,9 +27,21 @@ class JoinView(generics.CreateAPIView): # 회원가입 용 view
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class DailyView(viewsets.ModelViewSet): # 출석체크
+class DailyListView(generics.ListAPIView):
     queryset = Daily.objects.all()
     serializer_class = DailySerializer
+
+class DailyView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView): # 출석체크
+    queryset = Daily.objects.all()
+    serializer_class = DailySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, pk, *args, **kwargs):
+        with connection.cursor() as cursor:
+            cursor.execute("UPDATE api_daily SET date = %s where userid_id = %s", [request.data['date'], pk])
+        return Response(request.data, status=status.HTTP_200_OK)
 
 class MemeView(viewsets.ModelViewSet): #밈
     queryset = Meme.objects.all()
