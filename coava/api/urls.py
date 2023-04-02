@@ -18,5 +18,6 @@ urlpatterns = [
         'get' : 'list',
         'post' : 'create',
         'put' : 'update'
-    }))
+    })),
+    path('word/', WordView.as_view())
 ]

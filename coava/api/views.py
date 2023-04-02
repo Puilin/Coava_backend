@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from .serializer import *
 from .models import *
 from django.db import connection
+import os
+import requests
+import random
 
 # Create your views here.
 class UserListView(generics.ListAPIView): # user 전체 목록 출력
@@ -51,5 +54,30 @@ class BuzzView(viewsets.ModelViewSet): #유행어
     queryset = Buzz.objects.all()
     serializer_class = BuzzSerializer
 
-# class WordView(views.APIView):
-    # def get(self, request):
+class WordView(views.APIView):
+    def get(self, request):
+        url = "https://stdict.korean.go.kr/api/search.do"
+        try:
+            q = request.GET.get('word', None)
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        params = {
+            'key' : os.environ.get('KORAPI_KEY'),
+            'q' : q,
+            'req_type' : 'json',
+            'start' : random.randint(1, 10),
+            'advanced' : 'y',
+            'method' : 'start',
+            'pos' : 1,
+            'cat' : [i for i in range(1,64)],
+            'letter_s' : 2            
+        }
+        resp = requests.get(url, params=params)
+        resp = resp.json()
+        try:
+            items = resp['channel']['item']
+        except KeyError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        words = list(word['word'] for word in items)
+        word = random.sample(words, 1)
+        return Response(word[0], status=status.HTTP_200_OK)
