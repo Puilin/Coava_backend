@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Daily, Meme, Buzz
+from .models import *
 from argon2 import PasswordHasher
 
 class UserSerializer(serializers.ModelSerializer):

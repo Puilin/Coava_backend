@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from rest_framework import views, status, generics, viewsets, mixins
 from rest_framework.response import Response
-from .serializer import UserSerializer, DailySerializer, MemeSerializer, BuzzSerializer
-from .models import User, Daily, Meme, Buzz
+from .serializer import *
+from .models import *
 from django.db import connection
 
 # Create your views here.
@@ -50,3 +50,6 @@ class MemeView(viewsets.ModelViewSet): #밈
 class BuzzView(viewsets.ModelViewSet): #유행어
     queryset = Buzz.objects.all()
     serializer_class = BuzzSerializer
+
+# class WordView(views.APIView):
+    # def get(self, request):
