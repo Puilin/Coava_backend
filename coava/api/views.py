@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
+import django
 from rest_framework import views, status, generics, viewsets, mixins
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from .serializer import *
 from .models import *
@@ -54,7 +56,7 @@ class BuzzView(viewsets.ModelViewSet): #유행어
     queryset = Buzz.objects.all()
     serializer_class = BuzzSerializer
 
-class WordView(views.APIView):
+class WordView(views.APIView): # 끝말잇기
     def get(self, request):
         url = "https://stdict.korean.go.kr/api/search.do"
         try:
@@ -81,3 +83,23 @@ class WordView(views.APIView):
         words = list(word['word'] for word in items)
         word = random.sample(words, 1)
         return Response(word[0], status=status.HTTP_200_OK)
+
+class ShopView(views.APIView): # 상점
+    def get(self, request):
+        try:
+            section_name = request.GET.get('section', None)
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        section = Section.objects.get(section_name=section_name)
+        itemset = section.item_set.all()
+        json = django.core.serializers.serialize('json', itemset, ensure_ascii=False)
+        return HttpResponse(json, content_type='application/json', charset='utf-8')
+
+class ItemView(views.APIView):
+    def get(self, request, pk):
+        try:
+            item = Item.objects.get(id=pk)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        image = item.image
+        return HttpResponse(image, content_type='image/png')

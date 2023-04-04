@@ -19,5 +19,7 @@ urlpatterns = [
         'post' : 'create',
         'put' : 'update'
     })),
-    path('word/', WordView.as_view())
+    path('word/', WordView.as_view()),
+    path('shop/', ShopView.as_view()),
+    path('item/<int:pk>', ItemView.as_view())
 ]

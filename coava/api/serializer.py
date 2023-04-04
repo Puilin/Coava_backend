@@ -32,3 +32,8 @@ class BuzzSerializer(serializers.ModelSerializer): #유행어
     class Meta: 
         model = Buzz
         fields = ("__all__")
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ("__all__")

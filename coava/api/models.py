@@ -30,3 +30,16 @@ class Buzz(models.Model): #출석체크
     title = models.CharField(max_length=255, null=False)
     detail = models.CharField(max_length=255, null=False)
     image = models.CharField(max_length=255, null=False)
+
+class Section(models.Model):
+    section_name = models.CharField(max_length=255, null=False, unique=True)
+
+    def __str__(self):
+        return self.section_name
+
+class Item(models.Model):
+    name = models.CharField(max_length=255, null=False)
+    section = models.ForeignKey(Section, to_field="section_name", on_delete=models.CASCADE)
+    price = models.PositiveIntegerField()
+    date_until = models.DateTimeField(null=True)
+    image = models.ImageField(upload_to="media/")
