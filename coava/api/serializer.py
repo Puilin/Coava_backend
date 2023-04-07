@@ -37,3 +37,13 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = ("__all__")
+
+class AvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Avatar
+        fields = ("__all__")
+
+class MyItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyItem
+        fields = ("__all__")
