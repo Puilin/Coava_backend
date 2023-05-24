@@ -101,9 +101,11 @@ class WordView(views.APIView): # 끝말잇기
         word = random.sample(words, 1)
         ans_dict = {
             'result' : "SUCCESS",
-            'choices' : {
-                'word' : word[0]
-            }
+            'choices' : [
+                {
+                    'word' : word[0]   
+                }
+            ]
         }
         return JsonResponse(ans_dict, json_dumps_params={'ensure_ascii': False})
 
