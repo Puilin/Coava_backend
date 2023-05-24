@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 import django
 from rest_framework import views, status, generics, viewsets, mixins
 from rest_framework.renderers import JSONRenderer
@@ -44,11 +44,6 @@ class DailyView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, generics.Gen
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
-    def put(self, request, pk, *args, **kwargs):
-        with connection.cursor() as cursor:
-            cursor.execute("UPDATE api_daily SET date = %s where userid_id = %s", [request.data['date'], pk])
-        return Response(request.data, status=status.HTTP_200_OK)
-
 class MemeView(viewsets.ModelViewSet): #밈
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
@@ -78,10 +73,11 @@ class ThumbnailView(views.APIView): # 유행어, 밈 썸네일 get
         return HttpResponse(image, content_type='image/png')
 
 class WordView(views.APIView): # 끝말잇기
-    def get(self, request):
+    def post(self, request):
         url = "https://stdict.korean.go.kr/api/search.do"
         try:
-            q = request.GET.get('word', None)
+            q = request.data.get('word')
+            q = q[-1]
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         params = {
@@ -103,7 +99,11 @@ class WordView(views.APIView): # 끝말잇기
             return Response(status=status.HTTP_404_NOT_FOUND)
         words = list(word['word'] for word in items)
         word = random.sample(words, 1)
-        return Response(word[0], status=status.HTTP_200_OK)
+        ans_dict = {
+            'result' : "SUCCESS",
+            'answer' : word[0]
+        }
+        return JsonResponse(ans_dict, json_dumps_params={'ensure_ascii': False})
 
 class ShopView(views.APIView): # 상점
     def get(self, request):
