@@ -4,6 +4,16 @@
 
 대화형 아바타 앱 Coava의 백엔드 파트입니다.
 
+## Architecture Design
+
+<img src="https://postfiles.pstatic.net/MjAyMzA1MjVfMTM2/MDAxNjg0OTg4ODUxOTQx.9ik_GyAP4LNPB5_Cd8uCYH4ARm8GJoxYWeLv9tHMd7Qg.O7bXhKLulPQliFbw3PD73peStG4JcPOUGYyK86VrdKMg.PNG.suryblue/E18489E185B3E1848FE185B3E18485E185B5E186ABE18489E185A3E186BA202023-01-1220E1.png?type=w966"/>
+
+## Server Design
+
+<img src="https://postfiles.pstatic.net/MjAyMzA1MjVfMjA0/MDAxNjg0OTg5MjYxODE2.Yerd3rpONtwQGI9TrBjQ1Gabu65qDVbfzFWgy1GmGGAg.cG-nFKwufuNf7UOMP7p3xzwYNGGUf9A7UDbMpXJEZecg.PNG.suryblue/image.png?type=w966"/>
+
+## ERD
+[ERD](https://app.diagrams.net/?tags=%7B%7D&title=Coava.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Ca81A_fcsDJdDxzNHj2-gQk6gda_o1Y-%26export%3Ddownload)
 ## Getting Started
 
 
@@ -68,4 +78,4 @@ http://127.0.0.1 로 접속하면 api 서버 확인 가능
 
 ## See also
   
-  [개발문서](https://truthful-galaxy-de8.notion.site/ed85d4ffedd24c6eb0c6c459b79091e6?v=c429b8a897d241d7bf9d53fbd7da41d1)
+  [개발문서](https://truthful-galaxy-de8.notion.site/BackEnd-97a9fa72f2234a149d85fba729450720)
